@@ -69,8 +69,7 @@ function deepMerge(source, data) {
         const value = data[key];
         if (
             typeof value === "object" &&
-            value !== null &&
-            !(value instanceof Decimal)
+            value !== null
         ) {
             const newSource = source[key];
             if (!(key in source)) {
