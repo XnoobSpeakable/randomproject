@@ -9,7 +9,7 @@ player = {
         multUp: {
             cost: 1000,
             timesBought: 0,
-            scaling: 2.5
+            scaling: 3
         },
     }
 }
