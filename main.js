@@ -22,6 +22,11 @@ player = {
             timesBought: 0,
             scaling: 2.6
         },
+        gainUp: {
+            cost: 10000,
+            timesBought: 0,
+            scaling: 10
+        },
     }
 }
 
