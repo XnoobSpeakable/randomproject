@@ -9,7 +9,8 @@
     </head>
     <body>
         <div id="diventirebody">
-            <div id="counter">0</div>
+            <div class="inline" id="counter">0</div>
+            <div class="inline" id="rate"> (0/s)</div>
             <div class="flex center">
                 <div class="withtheoutline">
                     <h2>Clickers</h2>
@@ -17,14 +18,7 @@
                 </div>
             </div>
             <br>
-            <div class="flex center">
-                <div class="withtheoutline">
-                    <h2>Settings</h2>
-                    <button class="button" onclick="save()">save</button>
-                    <button class="button" onclick="wipe()">wipe</button>
-                </div>
-            </div>
-            <br>
+
             <div class="flex center">
                 <div class="withtheoutline">
                     <h2>Upgrades</h2>
@@ -36,8 +30,26 @@
                         <div class="inline" id="clickUpCost">Cost: </div>
                         <div class="inline" id="multUpCost">Cost: </div>
                     </div>
+                    <div>
+                        <button class="button" onclick="buyUpgrade('autUp')">+1/s</button>
+                        <button class="button" onclick="buyUpgrade('autMultUp')">2x/s</button>
+                    </div>
+                    <div>
+                        <div class="inline" id="autUpCost">Cost: </div>
+                        <div class="inline" id="autMultUpCost">Cost: </div>
+                    </div>
                 </div>
-            </div><main></main>
+            </div>
+            <br>
+            <div class="flex center">
+                <div class="withtheoutline">
+                    <h2>Settings</h2>
+                    <button class="button" onclick="save()">save</button>
+                    <button class="button" onclick="wipe()">wipe</button>
+                </div>
+            </div>
+            </div>
+            <div id="timer"></div>
         </div>
     </body>
 </html>

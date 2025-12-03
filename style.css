@@ -72,3 +72,9 @@ body {
 .inline {
     display: inline;
 }
+
+#timer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+}

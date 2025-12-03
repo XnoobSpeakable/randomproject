@@ -1,5 +1,6 @@
 player = {
     number: 0,
+    time: 0,
     upgrades: {
         clickUp: {
             cost: 100,
@@ -11,6 +12,16 @@ player = {
             timesBought: 0,
             scaling: 3
         },
+        autUp: {
+            cost: 50,
+            timesBought: 0,
+            scaling: 1.15
+        },
+        autMultUp: {
+            cost: 700,
+            timesBought: 0,
+            scaling: 2.6
+        },
     }
 }
 
@@ -19,6 +30,7 @@ if(str != null) {
     parsed = JSON.parse(str)
     deepMerge(player, parsed);
 }
+pastTime = player.time;
 
 function add() {
     player.number += gain
@@ -36,17 +48,46 @@ function timesBought(upgradeName) {
     return player.upgrades[upgradeName].timesBought
 }
 
-const TPS = 20;
+function timerFunc() {
+    player.time = performance.now() + pastTime
+    seconds = Math.round(player.time/1000)
+    minutes = Math.floor(seconds/60)
+    seconds = seconds%60
+    document.getElementById("timer").textContent = `Goal: Reach 67,000,000,000 points. Time elapsed: ${minutes}m${seconds}s`
+}
+
+function updateTexts() {
+    document.getElementById("counter").textContent = Math.round(player.number)
+    document.getElementById("addb").textContent = `${gain}/click`
+
+    document.getElementById("clickUpCost").textContent = `Cost: ${Math.round(player.upgrades.clickUp.cost)}`
+    document.getElementById("multUpCost").textContent = `Cost: ${Math.round(player.upgrades.multUp.cost)}`
+    document.getElementById("autUpCost").textContent = `Cost: ${Math.round(player.upgrades.autUp.cost)}`
+    document.getElementById("autMultUpCost").textContent = `Cost: ${Math.round(player.upgrades.autMultUp.cost)}`
+}
+
+const TPS = 30;
+const ITPS = 1/TPS;
 
 // game loop
 setInterval(() => {
     gain = (timesBought("clickUp") + 1) * Math.pow(2, timesBought("multUp"))
-    document.getElementById("counter").textContent = player.number
-    document.getElementById("addb").textContent = `${gain}/click`
-    document.getElementById("clickUpCost").textContent = `Cost: ${Math.round(player.upgrades.clickUp.cost)}`
-    document.getElementById("multUpCost").textContent = `Cost: ${Math.round(player.upgrades.multUp.cost)}`
-    
+    player.number += timesBought("autUp") * Math.pow(2, timesBought("autMultUp")) * ITPS
+    timerFunc()
+    updateTexts()
 }, 1000 / TPS);
+
+firstloop = true;
+setInterval(() => {
+    newnum = player.number
+    if(firstloop) {
+        firstloop = false;
+        oldnum = player.number
+    }
+    diff = newnum - oldnum
+    document.getElementById("rate").textContent = ` (${Math.round(diff)}/s)`
+    oldnum = player.number
+}, 1000);
 
 function save() {
     savefile = JSON.stringify(player);
@@ -61,7 +102,31 @@ function wipe() {
 // save loop
 setInterval(() => {
     save()
-}, 4000);
+}, 3000);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 function deepMerge(source, data) {
