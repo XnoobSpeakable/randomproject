@@ -16,12 +16,15 @@ function add() {
 function ab() {
     player.number += 2
 }
+function del() {
+    player.number -= 2
+}
 
 const TPS = 20;
 
 // game loop
 setInterval(() => {
-    document.getElementById("sk").textContent = player.number
+    document.getElementById("counter").textContent = player.number
 }, 1000 / TPS);
 
 function save() {
