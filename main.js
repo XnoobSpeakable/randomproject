@@ -1,30 +1,51 @@
-if(localStorage.getItem('savefile') == null) {
-    player = {
-        number: 0,
-        test: 5,
-        text: "aDFSSDFDVF"
+player = {
+    number: 0,
+    upgrades: {
+        clickUp: {
+            cost: 100,
+            timesBought: 0,
+            scaling: 1.2
+        },
+        multUp: {
+            cost: 1000,
+            timesBought: 0,
+            scaling: 2.5
+        },
     }
-} else {
-    str = localStorage.getItem("savefile")
-    player = JSON.parse(str)
 }
 
+str = localStorage.getItem("savefile")
+if(str != null) {
+    parsed = JSON.parse(str)
+    deepMerge(player, parsed);
+}
 
 function add() {
-    player.number += 67
+    player.number += gain
 }
-function ab() {
-    player.number += 2
+
+function buyUpgrade(upgradeName) {
+    cost = player.upgrades[upgradeName].cost
+    if(player.number >= cost) {
+        player.number -= cost
+        player.upgrades[upgradeName].timesBought += 1
+        player.upgrades[upgradeName].cost *= player.upgrades[upgradeName].scaling
+    }
 }
-function del() {
-    player.number -= 2
+function timesBought(upgradeName) {
+    return player.upgrades[upgradeName].timesBought
 }
 
 const TPS = 20;
 
 // game loop
 setInterval(() => {
+    gain = (timesBought("clickUp") + 1) * Math.pow(2, timesBought("multUp"))
     document.getElementById("counter").textContent = player.number
+    document.getElementById("addb").textContent = `${gain}/click`
+    document.getElementById("clickUpCost").textContent = `Cost: ${Math.round(player.upgrades.clickUp.cost)}`
+    document.getElementById("multUpCost").textContent = `Cost: ${Math.round(player.upgrades.multUp.cost)}`
+    
 }, 1000 / TPS);
 
 function save() {
@@ -41,6 +62,26 @@ function wipe() {
 setInterval(() => {
     save()
 }, 4000);
+
+
+function deepMerge(source, data) {
+    for (const key in data) {
+        const value = data[key];
+        if (
+            typeof value === "object" &&
+            value !== null &&
+            !(value instanceof Decimal)
+        ) {
+            const newSource = source[key];
+            if (!(key in source)) {
+                source[key] = Array.isArray(value) ? [] : {};
+            }
+            if (typeof newSource === "object" && newSource !== null) {
+                deepMerge(newSource, value);
+            }
+        } else source[key] = value;
+    }
+}
 
 const themes = [
    {

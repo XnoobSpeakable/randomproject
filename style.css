@@ -68,3 +68,7 @@ body {
     font-size: x-large;
     padding-bottom: 0.05em;
 }
+
+.inline {
+    display: inline;
+}
